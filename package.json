@@ -1,0 +1,18 @@
+{
+  "name": "@considonet/g-fontasticbundler",
+  "version": "1.0.0",
+  "description": "GBuild Fontastic webfont bundler",
+  "main": "./lib/api.js",
+  "keywords": [
+    "gstrap"
+  ],
+  "author": "ConsidoNet Solutions Paweł Gabryelewicz",
+  "license": "MIT",
+  "dependencies": {
+    "@considonet/g-logger": "^1.0.0",
+    "axios": "^0.18.0",
+    "css": "^2.2.3",
+    "mkdirp": "^0.5.1",
+    "sync-request": "^6.0.0"
+  }
+}
