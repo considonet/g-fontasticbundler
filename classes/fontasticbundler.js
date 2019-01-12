@@ -34,6 +34,28 @@ class FontasticBundler {
       const fontSrcs = [];
       const iconDefs = [];
 
+      // Detecting the class prefix
+      let classPrefix = "icon-";
+
+      css.some(rule => {
+
+        if (rule.type === "rule") {
+
+          if(rule.selectors[0].match(/\[class\^="/g)) {
+            classPrefix = rule.selectors[0].split(`"`)[1];
+            this.logger.log(`Detected CSS class prefix: ${classPrefix}`, 3);
+            return true;
+          }
+
+        }
+
+      });
+
+      // Preparing regexps
+      const ruleSelRegexp = new RegExp(`\\.${classPrefix}`);
+      const idFetchRegexp = new RegExp(`(\\.${classPrefix})|(:before)`, "g");
+
+      // Parsing the CSS
       css.forEach(rule => {
 
         if(rule.type==="font-face") {
@@ -55,9 +77,9 @@ class FontasticBundler {
 
           });
 
-        } else if(rule.type==="rule" && rule.selectors.some( selector => selector.match(/\.icon-/))) {
+        } else if(rule.type==="rule" && rule.selectors.some( selector => selector.match(ruleSelRegexp))) {
 
-          const id = rule.selectors[0].replace(/(\.icon-)|(:before)/g, "");
+          const id = rule.selectors[0].replace(idFetchRegexp, "");
           const code = rule.declarations[0].value.replace(/['"]/g, "");
 
           this.logger.log(`Icon ${id} registered with code ${code}`, 3);
@@ -129,11 +151,11 @@ class FontasticBundler {
         @font-face { font-family: "icons"; font-weight: normal; font-style: normal; {{srcs}}}
 @mixin fIcon() { font-family: "icons" !important; font-style: normal !important; font-weight: normal !important; font-variant: normal !important; text-transform: none !important; speak: none; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 [data-icon]:before { content: attr(data-icon); @include fIcon(); }
-[class^="icon-"]:before, [class*=" icon-"]:before { @include fIcon(); }
+[class^="${classPrefix}"]:before, [class*=" ${classPrefix}"]:before { @include fIcon(); }
 $icons: (
 {{icons}}
 );
-@each $name, $content in $icons { .icon-#{$name}::before { content: $content; }}
+@each $name, $content in $icons { .${classPrefix}#{$name}::before { content: $content; }}
 @mixin icon($name, $styles: false) { @if($styles==true) { @include fIcon(); } content: map_get($icons, $name); }`;
 
         let srcsStr = newSrcs.map(src => `src:${src};`).join("\n");
