@@ -1,7 +1,7 @@
 {
   "name": "@considonet/g-fontasticbundler",
-  "version": "1.2.0",
-  "description": "GBuild Fontastic webfont bundler",
+  "version": "1.2.1",
+  "description": "G-Build Fontastic webfont bundler",
   "main": "./lib/api.js",
   "keywords": [
     "gstrap"

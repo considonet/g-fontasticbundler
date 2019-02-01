@@ -147,8 +147,9 @@ class FontasticBundler {
 
         // Saving the SCSS file
         this.logger.log(`Saving SCSS to ${scssFile}`, 1);
-        const scssTemplate = `// File generated automatically with GBuild. All manual changes will be lost after running 'gbuild fontastic'!
-        @font-face { font-family: "icons"; font-weight: normal; font-style: normal; {{srcs}}}
+        const scssTemplate = `/* stylelint-disable */
+// File generated automatically with G-Build Fontastic Bundler (@considonet/g-fontasticbundler). All manual changes will be lost after running 'gbuild fontastic'!
+@font-face { font-family: "icons"; font-weight: normal; font-style: normal; {{srcs}}}
 @mixin fIcon() { font-family: "icons" !important; font-style: normal !important; font-weight: normal !important; font-variant: normal !important; text-transform: none !important; speak: none; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 [data-icon]:before { content: attr(data-icon); @include fIcon(); }
 [class^="${classPrefix}"]:before, [class*=" ${classPrefix}"]:before { @include fIcon(); }
